@@ -241,11 +241,39 @@ public class ChatServer {
                         out.println(sb.toString());
 
                     // --- Các chức năng của labels2 ---
-                    } else if (msg.equalsIgnoreCase("NETSTART")) {
-                        // Giả lập: khởi động dịch vụ mạng
-                        out.println("NETSTART_RESPONSE: Network service started successfully.");
+                    } else if (msg.equalsIgnoreCase("NETRESTART")) {
+                        try {
+                            // Dừng dịch vụ trước
+                            Process stopProcess = Runtime.getRuntime().exec("net stop Dhcp");
+                            stopProcess.waitFor();
 
-                    } else if (msg.equalsIgnoreCase("ROUTE")) {
+                            // Khởi động lại
+                            Process startProcess = Runtime.getRuntime().exec("net start Dhcp");
+                            startProcess.waitFor();
+
+                            // Đọc phản hồi lỗi nếu có
+                            BufferedReader errReader = new BufferedReader(
+                                new InputStreamReader(startProcess.getErrorStream())
+                            );
+                            StringBuilder errMsg = new StringBuilder();
+                            String line;
+                            while ((line = errReader.readLine()) != null) {
+                                errMsg.append(line).append("\n");
+                            }
+
+                            if (errMsg.length() == 0) {
+                                out.println("NETRESTART_RESPONSE: DHCP service restarted successfully (Windows)");
+                            } else if (errMsg.toString().contains("already been started")) {
+                                out.println("NETRESTART_RESPONSE: DHCP service was already running (Windows)");
+                            } else {
+                                out.println("NETRESTART_RESPONSE: Partial error:\n" + errMsg);
+                            }
+
+                        } catch (Exception e) {
+                            out.println("NETRESTART_RESPONSE: Failed to restart service: " + e.getMessage());
+                        }
+                    }
+                    else if (msg.equalsIgnoreCase("ROUTE")) {
                         try {
                             Process p = Runtime.getRuntime().exec("route print");
                             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));

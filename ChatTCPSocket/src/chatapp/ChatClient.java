@@ -104,7 +104,7 @@ public class ChatClient {
         JButton listBtn = createButton(labels1[4], btnColor);
         JButton echoBtn = createButton(labels1[5], btnColor);
         
-        JButton netStartBtn = createButton(labels2[0], btnColor);
+        JButton netReStartBtn = createButton(labels2[0], btnColor);
         JButton routeBtn = createButton(labels2[1], btnColor);
         JButton arpBtn = createButton(labels2[2], btnColor);
         JButton memBtn = createButton(labels2[3], btnColor);
@@ -118,7 +118,7 @@ public class ChatClient {
         buttonPanel.add(listBtn);
         buttonPanel.add(echoBtn);
         
-        buttonPanel.add(netStartBtn);
+        buttonPanel.add(netReStartBtn);
         buttonPanel.add(routeBtn);
         buttonPanel.add(arpBtn);
         buttonPanel.add(memBtn);
@@ -139,7 +139,7 @@ public class ChatClient {
             }
         });
         
-        netStartBtn.addActionListener(e -> out.println("NETSTART"));
+        netReStartBtn.addActionListener(e -> out.println("NETRESTART"));
         routeBtn.addActionListener(e -> out.println("ROUTE"));
         arpBtn.addActionListener(e -> out.println("ARP"));
         memBtn.addActionListener(e -> out.println("MEM"));
