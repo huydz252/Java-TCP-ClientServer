@@ -93,7 +93,7 @@ public class ChatClient {
         buttonPanel.setBackground(new Color(240, 248, 255));
 
         String[] labels1 = { "PING", "CFG", "TIME", "OS", "LIST", "ECHO" };
-        String[] labels2 = { "NETSTAT", "ROUTE", "ARP", "MEM", "CPU", "DISK" };
+        String[] labels2 = { "NETRESTAT", "ROUTE", "ARP", "MEM", "CPU", "DISK" };
 
         Color btnColor = new Color(65, 105, 225);
 

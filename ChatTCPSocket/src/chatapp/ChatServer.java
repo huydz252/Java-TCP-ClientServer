@@ -213,6 +213,7 @@ public class ChatServer {
                 // ===== Nhận tin nhắn và yêu cầu của client =====
                 String msg;
                 while ((msg = in.readLine()) != null) {
+                	out.println("---------------------------------");
                 	if (msg.equalsIgnoreCase("PING")) {
                         out.println("PONG");
 
@@ -242,6 +243,7 @@ public class ChatServer {
 
                     // --- Các chức năng của labels2 ---
                     } else if (msg.equalsIgnoreCase("NETRESTART")) {
+                    	out.println("---------------------------------");
                         try {
                             // Dừng dịch vụ trước
                             Process stopProcess = Runtime.getRuntime().exec("net stop Dhcp");
@@ -307,17 +309,27 @@ public class ChatServer {
                         out.println("MEM_RESPONSE: Total=" + totalMem / (1024 * 1024) + "MB, Free=" + freeMem / (1024 * 1024) + "MB");
 
                     } else if (msg.equalsIgnoreCase("CPU")) {
-                        // Lấy process hiện tại
-                        ProcessHandle current = ProcessHandle.current();
-                        ProcessHandle.Info info = current.info();
+                    	ProcessHandle current = ProcessHandle.current();
+                    	ProcessHandle.Info info = current.info();
 
-                        info.totalCpuDuration().ifPresentOrElse(duration -> {
-                            out.println("CPU_RESPONSE: Total process CPU time = " + duration.toMillis() + " ms");
-                        }, () -> {
-                            out.println("CPU_RESPONSE: Unable to read CPU time");
-                        });
+                    	info.command().ifPresent(cmd ->
+                    	    out.println("Command: " + cmd)
+                    	);
+
+                    	info.startInstant().ifPresent(start ->
+                    	    out.println("Start Time: " + start)
+                    	);
+
+                    	info.user().ifPresent(user ->
+                    	    out.println("User: " + user)
+                    	);
+
+                    	info.totalCpuDuration().ifPresentOrElse(duration -> {
+                    		out.println("CPU_RESPONSE: Total process CPU time = " + duration.toMillis() + " ms");
+                    	}, () -> {
+                    		out.println("CPU_RESPONSE: Unable to read CPU time");
+                    	});
                     }
-
 
                     else if (msg.equalsIgnoreCase("DISK")) {
                         File root = new File("C:\\");
